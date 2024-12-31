@@ -1,0 +1,103 @@
+---
+title: "GPIO Interface"
+---
+
+# GPIO Interface Documentation
+
+## Overview
+
+The GPIO interface provides direct control over the Raspberry Pi's GPIO pins through a C++ abstraction layer.
+
+## Class Reference
+
+### GPIO Controller
+
+    class GPIOController {
+    public:
+        enum class Mode {
+            INPUT,
+            OUTPUT,
+            PWM,
+            I2C,
+            SPI
+        };
+        
+        enum class Pull {
+            NONE,
+            UP,
+            DOWN
+        };
+        
+        // Configuration methods
+        void configurePin(int pin, Mode mode);
+        void setPullUpDown(int pin, Pull pull);
+        
+        // Digital I/O
+        void digitalWrite(int pin, bool value);
+        bool digitalRead(int pin);
+        
+        // PWM control
+        void setPWMFrequency(int pin, int frequency);
+        void setPWMDutyCycle(int pin, float dutyCycle);
+        
+        // Interrupt handling
+        void setInterrupt(int pin, Edge edge, InterruptHandler handler);
+    };
+
+## Pin Configuration
+
+### Mode Settings
+
+    // Configure pin as output
+    gpio.configurePin(18, GPIOController::Mode::OUTPUT);
+    
+    // Configure pin as input with pull-up
+    gpio.configurePin(17, GPIOController::Mode::INPUT);
+    gpio.setPullUpDown(17, GPIOController::Pull::UP);
+
+## Usage Examples
+
+### Basic Digital Output
+
+    // LED control example
+    void blinkLED(GPIOController& gpio, int pin) {
+        gpio.configurePin(pin, GPIOController::Mode::OUTPUT);
+        
+        while(true) {
+            gpio.digitalWrite(pin, true);   // LED on
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            gpio.digitalWrite(pin, false);  // LED off
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        }
+    }
+
+### Interrupt Handling
+
+    // Button interrupt example
+    void setupButton(GPIOController& gpio, int pin) {
+        gpio.configurePin(pin, GPIOController::Mode::INPUT);
+        gpio.setPullUpDown(pin, GPIOController::Pull::UP);
+        
+        gpio.setInterrupt(pin, Edge::FALLING, [](int pin) {
+            std::cout << "Button pressed on pin " << pin << std::endl;
+        });
+    }
+
+## Pin Mapping
+
+| BCM Pin | Physical Pin | Default Function |
+|---------|-------------|------------------|
+| GPIO 2  | 3           | I2C1 SDA        |
+| GPIO 3  | 5           | I2C1 SCL        |
+| GPIO 4  | 7           | GPIO            |
+| GPIO 17 | 11          | GPIO            |
+| GPIO 27 | 13          | GPIO            |
+
+## Error Handling
+
+    try {
+        gpio.configurePin(18, GPIOController::Mode::OUTPUT);
+    } catch (const GPIOException& e) {
+        logger.error("GPIO configuration failed: {}", e.what());
+        // Handle error appropriately
+    }

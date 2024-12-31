@@ -1,0 +1,24 @@
+---
+title: "C++ Raspberry Pi Platform"
+subtitle: "Developer and Reference Documentation"
+date: last-modified
+author:
+  - name: Your Organization
+    affiliation: Technical Documentation Team
+format:
+  html:
+    toc: true
+  pdf:
+    toc: true
+---
+
+## Welcome
+
+This documentation provides comprehensive information about the C++ Raspberry Pi Platform, including architecture details, hardware interfaces, software components, and deployment guidelines.
+
+## Quick Links
+
+- [Getting Started](sections/1-introduction/getting-started.qmd)
+- [Architecture Overview](sections/2-architecture/high-level-design.qmd)
+- [API Reference](sections/4-software/api-documentation.qmd)
+- [Installation Guide](sections/5-deployment/installation.qmd) 

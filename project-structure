@@ -1,0 +1,29 @@
+cpp-raspi-platform/
+├── _quarto.yml
+├── index.qmd
+├── styles/
+│   ├── custom.scss
+│   └── pdf-styles.scss
+├── images/
+│   └── logo.png
+└── sections/
+    ├── 1-introduction/
+    │   ├── overview.qmd
+    │   ├── getting-started.qmd
+    │   └── system-requirements.qmd
+    ├── 2-architecture/
+    │   ├── high-level-design.qmd
+    │   ├── component-diagram.qmd
+    │   └── data-flow.qmd
+    ├── 3-hardware/
+    │   ├── gpio-interface.qmd
+    │   ├── i2c-communication.qmd
+    │   └── spi-protocol.qmd
+    ├── 4-software/
+    │   ├── class-reference.qmd
+    │   ├── api-documentation.qmd
+    │   └── error-handling.qmd
+    └── 5-deployment/
+        ├── build-instructions.qmd
+        ├── installation.qmd
+        └── troubleshooting.qmd 

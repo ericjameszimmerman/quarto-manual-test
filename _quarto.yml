@@ -1,0 +1,51 @@
+project:
+  type: website
+  output-dir: _output
+
+website:
+  title: "C++ Raspberry Pi Platform"
+  navbar:
+    background: primary
+    search: true
+    left:
+      - text: "Home"
+        file: index.qmd
+      - text: "Documentation"
+        menu:
+          - text: "Introduction"
+            file: sections/1-introduction/overview.qmd
+          - text: "Architecture"
+            file: sections/2-architecture/high-level-design.qmd
+          - text: "Hardware"
+            file: sections/3-hardware/gpio-interface.qmd
+          - text: "Software"
+            file: sections/4-software/class-reference.qmd
+          - text: "Deployment"
+            file: sections/5-deployment/build-instructions.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles/custom.scss
+    toc: true
+    code-fold: true
+    
+  pdf:
+    documentclass: scrreprt
+    papersize: letter
+    geometry:
+      - top=1in
+      - bottom=1in
+      - left=1in
+      - right=1in
+    include-in-header: 
+      text: |
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+    toc: true
+    number-sections: true
+    colorlinks: true
+    css: styles/pdf-styles.scss
+    fig-width: 6
+    fig-height: 4
+    keep-tex: true 

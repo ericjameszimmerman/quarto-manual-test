@@ -1,0 +1,26 @@
+---
+title: "Platform Overview"
+---
+
+# C++ Raspberry Pi Platform Overview
+
+## Purpose
+
+The C++ Raspberry Pi Platform provides a robust framework for developing hardware-interfacing applications on Raspberry Pi devices. It offers high-level abstractions for GPIO, I2C, and SPI communications while maintaining efficient, low-level access to hardware.
+
+## Key Features
+
+- Hardware abstraction layer for GPIO, I2C, and SPI
+- Event-driven architecture
+- Real-time capable
+- Thread-safe operations
+- Configurable logging system
+- Error handling framework
+
+## Target Applications
+
+- Industrial automation
+- IoT devices
+- Sensor networks
+- Robotics control systems
+- Educational projects 

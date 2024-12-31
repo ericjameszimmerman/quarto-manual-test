@@ -1,0 +1,110 @@
+---
+title: "API Documentation"
+---
+
+# API Documentation
+
+## Platform API
+
+### Initialization and Setup
+
+    // Initialize the platform with default configuration
+    Platform platform;
+    platform.initialize();
+    
+    // Initialize with custom configuration
+    Config config;
+    config.loadFromFile("config.json");
+    platform.initialize(config);
+
+### GPIO Operations
+
+    // Access GPIO controller
+    auto& gpio = platform.gpio();
+    
+    // Configure and use GPIO
+    gpio.configurePin(18, GPIO::Mode::OUTPUT);
+    gpio.digitalWrite(18, true);
+    
+    // Read input with pull-up
+    gpio.configurePin(17, GPIO::Mode::INPUT);
+    gpio.setPullUpDown(17, GPIO::Pull::UP);
+    bool value = gpio.digitalRead(17);
+
+### I2C Communication
+
+    // Access I2C controller
+    auto& i2c = platform.i2c();
+    
+    // Configure I2C
+    I2CConfig i2cConfig{
+        .clockSpeed = 400000,  // 400kHz
+        .address = 0x50        // Device address
+    };
+    i2c.configure(i2cConfig);
+    
+    // Write data
+    std::vector<uint8_t> data = {0x01, 0x02, 0x03};
+    i2c.write(0x50, data);
+    
+    // Read data
+    auto response = i2c.read(0x50, 3);
+
+### Event Handling
+
+    // Subscribe to events
+    platform.events().subscribe(EventType::GPIO_INTERRUPT, [](const Event& e) {
+        auto& gpioEvent = static_cast<const GPIOEvent&>(e);
+        std::cout << "GPIO " << gpioEvent.pin << " triggered\n";
+    });
+    
+    // Process events
+    platform.events().processEvents();
+
+### Error Handling
+
+    try {
+        platform.initialize();
+    } catch (const PlatformException& e) {
+        std::cerr << "Error: " << e.what() << "\n";
+        std::cerr << "Error Code: " << e.getErrorCode() << "\n";
+    }
+
+## Configuration API
+
+### JSON Configuration Format
+
+    {
+        "gpio": {
+            "defaultMode": "input",
+            "pwmFrequency": 1000
+        },
+        "i2c": {
+            "clockSpeed": 400000,
+            "timeout": 1000
+        },
+        "logging": {
+            "level": "debug",
+            "file": "platform.log"
+        }
+    }
+
+### Loading Configuration
+
+    // Load from file
+    ConfigManager config;
+    config.loadFromFile("config.json");
+    
+    // Access configuration values
+    auto pwmFreq = config.getValue<int>("gpio.pwmFrequency", 1000);
+    auto logLevel = config.getValue<std::string>("logging.level", "info");
+
+## Logging API
+
+    // Configure logger
+    auto& logger = platform.logger();
+    logger.setLevel(Logger::Level::DEBUG);
+    
+    // Log messages
+    logger.debug("GPIO {} configured as {}", pin, mode);
+    logger.error("Failed to initialize I2C: {}", error);

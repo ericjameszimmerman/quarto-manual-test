@@ -1,0 +1,108 @@
+---
+title: "SPI Protocol"
+---
+
+# SPI Protocol Interface
+
+## Overview
+
+The SPI interface enables high-speed synchronous serial communication with peripheral devices.
+
+## Class Reference
+
+### SPI Controller
+
+    class SPIController {
+    public:
+        enum class Mode {
+            MODE0 = 0,  // CPOL=0, CPHA=0
+            MODE1 = 1,  // CPOL=0, CPHA=1
+            MODE2 = 2,  // CPOL=1, CPHA=0
+            MODE3 = 3   // CPOL=1, CPHA=1
+        };
+        
+        struct Config {
+            uint8_t busNumber;
+            uint32_t speedHz;
+            Mode mode;
+            uint8_t bitsPerWord;
+            bool lsbFirst;
+        };
+        
+        // Initialization
+        void initialize(const Config& config);
+        void shutdown();
+        
+        // Basic operations
+        void transfer(const std::vector<uint8_t>& txData, 
+                     std::vector<uint8_t>& rxData);
+        
+        // Configuration
+        void setSpeed(uint32_t speedHz);
+        void setMode(Mode mode);
+        void setChipSelect(int cs, bool active);
+    };
+
+## Usage Examples
+
+### Basic Transfer
+
+    // Configure SPI controller
+    SPIController::Config config{
+        .busNumber = 0,
+        .speedHz = 1000000,    // 1 MHz
+        .mode = SPIController::Mode::MODE0,
+        .bitsPerWord = 8,
+        .lsbFirst = false
+    };
+    
+    SPIController spi;
+    spi.initialize(config);
+    
+    // Perform transfer
+    std::vector<uint8_t> txData = {0x01, 0x02, 0x03};
+    std::vector<uint8_t> rxData;
+    spi.transfer(txData, rxData);
+
+### Multiple Chip Selects
+
+    // Select device 0
+    spi.setChipSelect(0, true);
+    spi.transfer(txData1, rxData1);
+    spi.setChipSelect(0, false);
+    
+    // Select device 1
+    spi.setChipSelect(1, true);
+    spi.transfer(txData2, rxData2);
+    spi.setChipSelect(1, false);
+
+## Hardware Configuration
+
+### Pin Mapping
+
+| Signal | GPIO Pin | Physical Pin |
+|--------|----------|--------------|
+| MOSI   | GPIO 10 | 19          |
+| MISO   | GPIO 9  | 21          |
+| SCLK   | GPIO 11 | 23          |
+| CE0    | GPIO 8  | 24          |
+| CE1    | GPIO 7  | 26          |
+
+### Mode Configuration
+
+    // Mode 0 (Most common)
+    spi.setMode(SPIController::Mode::MODE0);
+    
+    // Mode 3 (Second most common)
+    spi.setMode(SPIController::Mode::MODE3);
+
+## Error Handling
+
+    try {
+        spi.transfer(txData, rxData);
+    } catch (const SPIException& e) {
+        if (e.getErrorCode() == SPIError::TRANSFER_FAILED) {
+            logger.error("SPI transfer failed: {}", e.what());
+            // Implement retry logic or error recovery
+        }
+    } 

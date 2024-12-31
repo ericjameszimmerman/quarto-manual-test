@@ -1,0 +1,113 @@
+---
+title: "I2C Communication"
+---
+
+# I2C Communication Interface
+
+## Overview
+
+The I2C interface provides a standardized way to communicate with I2C devices connected to the Raspberry Pi.
+
+## Class Reference
+
+### I2C Controller
+
+    class I2CController {
+    public:
+        struct Config {
+            uint8_t busNumber;
+            uint32_t clockSpeed;
+            bool tenBitAddressing;
+            uint16_t timeout;
+        };
+        
+        // Initialization
+        void initialize(const Config& config);
+        void shutdown();
+        
+        // Basic I2C operations
+        bool write(uint8_t deviceAddress, const std::vector<uint8_t>& data);
+        bool read(uint8_t deviceAddress, size_t length, std::vector<uint8_t>& data);
+        
+        // Register operations
+        uint8_t readRegister8(uint8_t deviceAddress, uint8_t regAddress);
+        void writeRegister8(uint8_t deviceAddress, uint8_t regAddress, uint8_t value);
+        
+        // Advanced features
+        bool probeDevice(uint8_t address);
+        std::vector<uint8_t> scanBus();
+    };
+
+## Usage Examples
+
+### Basic Device Communication
+
+    // Configure I2C controller
+    I2CController::Config config{
+        .busNumber = 1,
+        .clockSpeed = 400000,  // 400kHz
+        .tenBitAddressing = false,
+        .timeout = 1000        // 1 second timeout
+    };
+    
+    I2CController i2c;
+    i2c.initialize(config);
+    
+    // Write data to device
+    std::vector<uint8_t> data = {0x01, 0x02, 0x03};
+    i2c.write(0x50, data);
+    
+    // Read response
+    std::vector<uint8_t> response;
+    i2c.read(0x50, 3, response);
+
+### Register Access
+
+    // Read from register
+    uint8_t value = i2c.readRegister8(0x50, 0x00);
+    
+    // Write to register
+    i2c.writeRegister8(0x50, 0x01, 0xFF);
+
+## Device Discovery
+
+    // Scan for devices
+    auto devices = i2c.scanBus();
+    for (auto address : devices) {
+        std::cout << "Found device at address 0x" 
+                  << std::hex << static_cast<int>(address) << std::endl;
+    }
+
+## Error Handling
+
+    try {
+        i2c.initialize(config);
+    } catch (const I2CException& e) {
+        if (e.getErrorCode() == I2CError::BUS_ACCESS_FAILED) {
+            logger.error("Failed to access I2C bus. Check if I2C is enabled");
+        } else {
+            logger.error("I2C error: {}", e.what());
+        }
+    }
+
+## Hardware Configuration
+
+### Pin Mapping
+
+| Function | GPIO Pin | Physical Pin |
+|----------|----------|--------------|
+| SDA      | GPIO 2   | 3           |
+| SCL      | GPIO 3   | 5           |
+
+### Bus Speed Options
+
+    // Standard mode (100 kHz)
+    config.clockSpeed = 100000;
+    
+    // Fast mode (400 kHz)
+    config.clockSpeed = 400000;
+    
+    // Fast mode plus (1 MHz)
+    config.clockSpeed = 1000000;
+
+</rewritten_file> 

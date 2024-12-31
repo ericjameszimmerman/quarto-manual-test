@@ -1,0 +1,121 @@
+---
+title: "Build Instructions"
+---
+
+# Building the Platform
+
+## Prerequisites
+
+Before building, ensure you have all required dependencies installed:
+
+    # Update package repositories
+    sudo apt-get update
+    
+    # Install build essentials and dependencies
+    sudo apt-get install -y \
+        build-essential \
+        cmake \
+        git \
+        libgpiod-dev \
+        libi2c-dev \
+        libspi-dev \
+        libboost-all-dev \
+        raspberrypi-kernel-headers
+
+## Build Steps
+
+### 1. Clone Repository
+
+    # Clone the repository
+    git clone https://github.com/your-org/cpp-raspi-platform.git
+    cd cpp-raspi-platform
+
+### 2. Configure Build
+
+    # Create and enter build directory
+    mkdir build && cd build
+    
+    # Configure with CMake
+    cmake -DCMAKE_BUILD_TYPE=Release \
+          -DENABLE_TESTS=ON \
+          -DENABLE_EXAMPLES=ON \
+          ..
+
+### 3. Build Project
+
+    # Build using all available cores
+    make -j$(nproc)
+    
+    # Run tests (optional)
+    make test
+    
+    # Install
+    sudo make install
+    sudo ldconfig
+
+## Build Options
+
+### CMake Configuration Options
+
+    # Debug build with additional logging
+    cmake -DCMAKE_BUILD_TYPE=Debug ..
+    
+    # Release build with optimizations
+    cmake -DCMAKE_BUILD_TYPE=Release ..
+    
+    # Minimal build without examples
+    cmake -DENABLE_EXAMPLES=OFF ..
+
+## Cross-Compilation
+
+### Setting up Cross-Compilation
+
+    # Install cross-compilation toolchain
+    sudo apt-get install -y crossbuild-essential-arm64
+    
+    # Configure for cross-compilation
+    cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain-raspberrypi.cmake \
+          -DCMAKE_BUILD_TYPE=Release \
+          ..
+
+### Toolchain Configuration
+
+    # Example toolchain file (cmake/toolchain-raspberrypi.cmake)
+    set(CMAKE_SYSTEM_NAME Linux)
+    set(CMAKE_SYSTEM_PROCESSOR arm)
+    
+    set(CMAKE_C_COMPILER /usr/bin/arm-linux-gnueabihf-gcc)
+    set(CMAKE_CXX_COMPILER /usr/bin/arm-linux-gnueabihf-g++)
+    
+    set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+    set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+    set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+
+## Troubleshooting
+
+### Common Build Issues
+
+1. Missing Dependencies:
+
+    # Install missing boost libraries
+    sudo apt-get install -y libboost-all-dev
+    
+    # Install GPIO development headers
+    sudo apt-get install -y libgpiod-dev
+
+2. Permission Issues:
+
+    # Add user to required groups
+    sudo usermod -a -G gpio,i2c,spi $USER
+    
+    # Log out and log back in for changes to take effect
+
+3. Compilation Errors:
+
+    # Clean build directory
+    rm -rf build/*
+    
+    # Reconfigure and build
+    cmake ..
+    make clean
+    make -j$(nproc)

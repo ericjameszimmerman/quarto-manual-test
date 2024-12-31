@@ -1,0 +1,54 @@
+project:
+  type: book
+  output-dir: _output
+
+book:
+  title: "C++ Raspberry Pi Platform"
+  author: "Your Organization"
+  chapters:
+    - index.qmd
+    - part: "Introduction"
+      chapters:
+        - sections/1-introduction/overview.qmd
+        - sections/1-introduction/getting-started.qmd
+        - sections/1-introduction/system-requirements.qmd
+    - part: "Architecture"
+      chapters:
+        - sections/2-architecture/high-level-design.qmd
+        - sections/2-architecture/component-diagram.qmd
+        - sections/2-architecture/data-flow.qmd
+    - part: "Hardware"
+      chapters:
+        - sections/3-hardware/gpio-interface.qmd
+        - sections/3-hardware/i2c-communication.qmd
+        - sections/3-hardware/spi-protocol.qmd
+    - part: "Software"
+      chapters:
+        - sections/4-software/class-reference.qmd
+        - sections/4-software/api-documentation.qmd
+        - sections/4-software/error-handling.qmd
+    - part: "Deployment"
+      chapters:
+        - sections/5-deployment/build-instructions.qmd
+        - sections/5-deployment/installation.qmd
+        - sections/5-deployment/troubleshooting.qmd
+
+format:
+  pdf:
+    documentclass: scrreprt
+    papersize: letter
+    geometry:
+      - top=1in
+      - bottom=1in
+      - left=1in
+      - right=1in
+    include-in-header: 
+      text: |
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+    toc: true
+    number-sections: true
+    colorlinks: true
+    fig-width: 6
+    fig-height: 4
+    keep-tex: true 

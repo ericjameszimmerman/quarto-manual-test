@@ -1,0 +1,6 @@
+/.quarto/
+/env/
+/_output/
+/sections/**/*.tex
+/site_libs/
+/*.tex

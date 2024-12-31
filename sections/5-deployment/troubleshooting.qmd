@@ -1,0 +1,156 @@
+---
+title: "Troubleshooting Guide"
+---
+
+# Troubleshooting Guide
+
+## Common Issues
+
+### 1. Permission Errors
+
+#### Symptom
+    # Error when accessing GPIO
+    Error: Failed to access GPIO device: Permission denied
+    
+    # Error when accessing I2C
+    Error: Could not open I2C device: Permission denied
+
+#### Solution
+    # Add user to required groups
+    sudo usermod -a -G gpio,i2c,spi $USER
+    
+    # Verify group membership
+    groups $USER
+    
+    # Log out and log back in for changes to take effect
+
+### 2. Hardware Detection Issues
+
+#### Symptom
+    # I2C or SPI devices not found
+    Error: Could not find device at address 0x50
+    Error: SPI transfer failed: No such device
+
+#### Solution
+    # Check if interfaces are enabled
+    ls -l /dev/i2c* /dev/spi*
+    
+    # Enable interfaces if missing
+    sudo raspi-config nonint do_i2c 0
+    sudo raspi-config nonint do_spi 0
+    
+    # Verify kernel modules are loaded
+    lsmod | grep -E "i2c_bcm|spi_bcm2835"
+
+### 3. Build Errors
+
+#### Symptom
+    # Missing dependencies
+    CMake Error: Could not find boost libraries
+    
+    # Compilation errors
+    error: 'GPIO' was not declared in this scope
+
+#### Solution
+    # Install required packages
+    sudo apt-get update
+    sudo apt-get install -y \
+        build-essential \
+        cmake \
+        libboost-all-dev \
+        libgpiod-dev
+    
+    # Clean and rebuild
+    rm -rf build/*
+    cmake ..
+    make clean && make
+
+## Diagnostic Tools
+
+### Platform Diagnostics
+
+    # Run hardware test suite
+    cpp-raspi-platform-test --verbose
+    
+    # Check specific subsystem
+    cpp-raspi-platform-test --test=gpio
+    cpp-raspi-platform-test --test=i2c
+    cpp-raspi-platform-test --test=spi
+
+### System Logs
+
+    # View platform logs
+    sudo journalctl -u cpp-raspi-platform
+    
+    # Check hardware logs
+    dmesg | grep -E "i2c|spi|gpio"
+    
+    # View application logs
+    tail -f /var/log/cpp-raspi-platform/platform.log
+
+## Performance Issues
+
+### 1. High CPU Usage
+
+#### Diagnostic
+    # Monitor CPU usage
+    top -p $(pgrep -f cpp-raspi-platform)
+    
+    # Check for busy loops
+    perf top -p $(pgrep -f cpp-raspi-platform)
+
+#### Solution
+    # Adjust polling intervals in config
+    {
+        "polling": {
+            "gpio": 100,
+            "i2c": 250,
+            "spi": 500
+        }
+    }
+
+### 2. Communication Timeouts
+
+#### Diagnostic
+    # Monitor I2C timing
+    i2cdetect -F 1
+    
+    # Check SPI speed
+    grep spi /sys/kernel/debug/clk/clk_summary
+
+#### Solution
+    # Adjust timing parameters
+    {
+        "timeouts": {
+            "i2c": 1000,
+            "spi": 500
+        },
+        "retries": 3
+    }
+
+## Recovery Procedures
+
+### 1. Emergency Recovery
+
+    # Stop platform service
+    sudo systemctl stop cpp-raspi-platform
+    
+    # Reset hardware state
+    cpp-raspi-platform-reset
+    
+    # Clear configuration
+    sudo rm /etc/cpp-raspi-platform/config.json
+    sudo cp /etc/cpp-raspi-platform/config.json.default \
+           /etc/cpp-raspi-platform/config.json
+
+### 2. Data Collection for Support
+
+    # Generate diagnostic report
+    cpp-raspi-platform-diagnostic > diagnostic.txt
+    
+    # Collect system information
+    uname -a > system_info.txt
+    lsb_release -a >> system_info.txt
+    
+    # Gather logs
+    sudo journalctl -u cpp-raspi-platform --no-pager > platform_logs.txt

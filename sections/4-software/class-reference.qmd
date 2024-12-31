@@ -1,0 +1,121 @@
+---
+title: "Class Reference"
+---
+
+# Class Reference Documentation
+
+## Core Classes
+
+### Platform Class
+
+    class Platform {
+    public:
+        // Construction/Destruction
+        Platform();
+        ~Platform();
+        Platform(const Platform&) = delete;
+        Platform& operator=(const Platform&) = delete;
+        
+        // Initialization
+        void initialize(const Config& config = Config());
+        void shutdown();
+        
+        // Subsystem Access
+        GPIOController& gpio();
+        I2CController& i2c();
+        SPIController& spi();
+        EventManager& events();
+        
+        // Utility Functions
+        Logger& logger();
+        ConfigManager& config();
+    };
+
+### Event System
+
+    class EventManager {
+    public:
+        using EventCallback = std::function<void(const Event&)>;
+        
+        // Event registration
+        size_t subscribe(EventType type, EventCallback callback);
+        void unsubscribe(EventType type, size_t callbackId);
+        
+        // Event handling
+        void dispatch(const Event& event);
+        void processEvents();
+        
+    private:
+        std::queue<Event> eventQueue;
+        std::map<EventType, std::vector<std::pair<size_t, EventCallback>>> handlers;
+    };
+
+### Configuration Management
+
+    class ConfigManager {
+    public:
+        // Configuration loading
+        void loadFromFile(const std::string& path);
+        void loadFromJson(const std::string& jsonString);
+        
+        // Value access
+        template<typename T>
+        T getValue(const std::string& key, const T& defaultValue = T()) const;
+        
+        // Value modification
+        void setValue(const std::string& key, const Value& value);
+        void save(const std::string& path);
+        
+    private:
+        std::map<std::string, Value> config;
+    };
+
+## Hardware Controllers
+
+### GPIO Controller Interface
+
+    class IGPIOController {
+    public:
+        virtual void configurePin(int pin, PinMode mode) = 0;
+        virtual void digitalWrite(int pin, bool value) = 0;
+        virtual bool digitalRead(int pin) = 0;
+        virtual void setPWM(int pin, float dutyCycle) = 0;
+    };
+
+### I2C Controller Interface
+
+    class II2CController {
+    public:
+        virtual void configure(const I2CConfig& config) = 0;
+        virtual void write(uint8_t address, const Buffer& data) = 0;
+        virtual Buffer read(uint8_t address, size_t length) = 0;
+    };
+
+## Utility Classes
+
+### Logger
+
+    class Logger {
+    public:
+        enum class Level { DEBUG, INFO, WARNING, ERROR, FATAL };
+        
+        void setLevel(Level level);
+        void log(Level level, const std::string& message);
+        
+        template<typename... Args>
+        void debug(const char* format, Args&&... args);
+        
+        template<typename... Args>
+        void error(const char* format, Args&&... args);
+    };
+
+### Error Handling
+
+    class PlatformException : public std::runtime_error {
+    public:
+        explicit PlatformException(const std::string& message);
+        explicit PlatformException(ErrorCode code, const std::string& message);
+        
+        ErrorCode getErrorCode() const;
+        const char* getErrorString() const;
+    };

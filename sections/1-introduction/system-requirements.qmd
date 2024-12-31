@@ -1,0 +1,41 @@
+---
+title: "System Requirements"
+---
+
+# System Requirements
+
+## Hardware Requirements
+
+### Minimum Hardware
+- Raspberry Pi 3B+ or newer
+- 1GB RAM
+- 16GB SD Card
+- Power supply meeting Pi specifications (5.1V, 2.5A)
+
+### Recommended Hardware
+- Raspberry Pi 4B (4GB+ RAM)
+- 32GB SD Card (Class 10)
+- Official Raspberry Pi Power Supply
+- Active cooling solution
+
+## Software Requirements
+
+### Operating System
+- Raspberry Pi OS (64-bit recommended)
+- Ubuntu Server 20.04 LTS or newer
+- Any Linux distribution with:
+  - systemd
+  - Device tree support
+  - SPI/I2C kernel modules
+
+### Development Tools
+- GCC 8.3.0 or newer
+- CMake 3.15+
+- Git 2.20+
+- Python 3.7+ (for build scripts)
+
+### Required Libraries
+- libgpiod-dev
+- libi2c-dev
+- libspi-dev
+- boost (system, thread) 

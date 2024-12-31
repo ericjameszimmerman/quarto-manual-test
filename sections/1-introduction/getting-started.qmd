@@ -1,0 +1,127 @@
+---
+title: "Getting Started"
+---
+
+# Getting Started Guide
+
+## Quick Start
+
+This guide will help you set up and start using the C++ Raspberry Pi Platform.
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- Raspberry Pi (3B+ or newer recommended)
+- Debian-based Linux distribution
+- C++ compiler supporting C++17 or later
+- CMake 3.15+
+- Git
+
+## Installation Steps
+
+### 1. Install Dependencies
+
+    # Update package list
+    sudo apt-get update
+
+    # Install required packages
+    sudo apt-get install -y \
+        build-essential \
+        cmake \
+        git \
+        libgpiod-dev \
+        libi2c-dev \
+        libspi-dev \
+        libboost-all-dev
+
+### 2. Clone and Build
+
+    # Clone repository
+    git clone https://github.com/your-org/cpp-raspi-platform.git
+    cd cpp-raspi-platform
+
+    # Create build directory
+    mkdir build && cd build
+    cmake ..
+    make -j4
+
+    # Install
+    sudo make install
+    sudo ldconfig
+
+## Basic Example
+
+Here's a simple LED blink example:
+
+    #include "platform/Platform.hpp"
+    #include <chrono>
+    #include <thread>
+
+    int main() {
+        try {
+            // Initialize platform
+            Platform platform;
+            platform.initialize();
+            
+            // Configure GPIO pin 18 for LED
+            auto& gpio = platform.gpio();
+            gpio.configurePin(18, GPIO::Mode::OUTPUT);
+            
+            // Blink LED
+            while(true) {
+                gpio.digitalWrite(18, true);   // LED on
+                std::this_thread::sleep_for(std::chrono::milliseconds(500));
+                gpio.digitalWrite(18, false);  // LED off
+                std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            }
+        } catch (const PlatformException& e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+            return 1;
+        }
+        return 0;
+    }
+
+## Configuration
+
+Create a basic configuration file `config.json`:
+
+    {
+        "gpio": {
+            "defaultMode": "input",
+            "pwmFrequency": 1000
+        },
+        "i2c": {
+            "clockSpeed": 400000
+        },
+        "spi": {
+            "mode": 0,
+            "speedHz": 1000000
+        }
+    }
+
+## Next Steps
+
+1. Review the [System Requirements](system-requirements.qmd)
+2. Explore the [Platform Overview](overview.qmd)
+3. Check the [Hardware Interfaces](../3-hardware/gpio-interface.qmd)
+4. See the [API Documentation](../4-software/api-documentation.qmd)
+
+## Common Issues
+
+### Permission Errors
+
+If you encounter permission issues:
+
+    # Add your user to required groups
+    sudo usermod -a -G gpio,i2c,spi $USER
+
+    # Log out and log back in for changes to take effect
+
+### Hardware Access
+
+Enable I2C and SPI if needed:
+
+    # Enable I2C and SPI through raspi-config
+    sudo raspi-config nonint do_i2c 0
+    sudo raspi-config nonint do_spi 0 
