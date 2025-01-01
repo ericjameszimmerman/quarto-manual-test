@@ -10,6 +10,7 @@ title: "High-Level Design"
 
 The HAL provides a unified interface to hardware peripherals:
 
+```cpp
     class HAL {
     public:
         virtual void initialize() = 0;
@@ -17,9 +18,10 @@ The HAL provides a unified interface to hardware peripherals:
         virtual I2CController& i2c() = 0;
         virtual SPIController& spi() = 0;
     };
+```
 
 ### 2. Event System
-
+```cpp
     class EventManager {
     public:
         void registerHandler(EventType type, EventHandler handler);
@@ -29,9 +31,10 @@ The HAL provides a unified interface to hardware peripherals:
         std::queue<Event> eventQueue;
         std::map<EventType, std::vector<EventHandler>> handlers;
     };
+```
 
 ### 3. Configuration System
-
+```cpp
     class ConfigManager {
     public:
         void loadConfig(const std::string& path);
@@ -39,6 +42,7 @@ The HAL provides a unified interface to hardware peripherals:
         T getValue(const std::string& key);
         void setValue(const std::string& key, const Value& value);
     };
+```
 
 ## System Flow
 

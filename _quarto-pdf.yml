@@ -42,13 +42,18 @@ format:
       - bottom=0.5in
       - left=0.5in
       - right=0.5in
-    include-in-header: 
+    include-in-header:
       text: |
         \usepackage{fancyhdr}
         \pagestyle{fancy}
+        \usepackage{graphicx}
+        \setkeys{Gin}{width=0.85\textwidth}
     toc: true
     number-sections: true
     colorlinks: true
     fig-width: 6
     fig-height: 4
-    keep-tex: true 
+    keep-tex: true
+    mermaid:
+      theme: default
+      fontSize: 12 

@@ -1,6 +1,25 @@
+# Quarto temporary files
 /.quarto/
-/env/
+_site/
+/.quarto-*
+
+# Build output
 /_output/
-/sections/**/*.tex
 /site_libs/
+
+# Generated TeX files
+/sections/**/*.tex
 /*.tex
+
+# Mermaid diagram temp files
+**/*.mmd.svg
+**/*.mmd.png
+**/*.mermaid.*
+
+# Environment
+/env/
+
+# OS files
+.DS_Store
+Thumbs.db
+figure-latex/

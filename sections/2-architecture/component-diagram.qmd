@@ -10,6 +10,9 @@ The C++ Raspberry Pi Platform is organized into several key components that work
 
 ## Core Components Diagram
 
+```{mermaid}
+%%| fig-width: 5
+%%| fig-align: center
     graph TD
         A[Application Layer] --> B[Platform API]
         B --> C[Event Manager]
@@ -20,11 +23,13 @@ The C++ Raspberry Pi Platform is organized into several key components that work
         C --> H[Event Queue]
         H --> I[Hardware Events]
         H --> J[System Events]
+```
 
 ## Component Interfaces
 
 ### Platform API Interface
 
+```cpp
     class PlatformAPI {
     public:
         // Core interfaces
@@ -36,9 +41,11 @@ The C++ Raspberry Pi Platform is organized into several key components that work
         virtual Logger& logger() = 0;
         virtual Diagnostics& diagnostics() = 0;
     };
+```
 
 ### Hardware Controller Interface
 
+```cpp
     class HardwareController {
     public:
         // Lifecycle management
@@ -53,6 +60,7 @@ The C++ Raspberry Pi Platform is organized into several key components that work
         virtual State getState() const = 0;
         virtual void setState(const State& state) = 0;
     };
+```
 
 ## Component Dependencies
 
@@ -70,6 +78,7 @@ The C++ Raspberry Pi Platform is organized into several key components that work
 
 ### Initialization Sequence
 
+```mermaid
     sequenceDiagram
         participant App
         participant Platform
@@ -82,20 +91,30 @@ The C++ Raspberry Pi Platform is organized into several key components that work
         HW-->>HAL: status
         HAL-->>Platform: ready
         Platform-->>App: initialized
+```
 
 ## Component Communication
 
 ### Event-Based Communication
 
+```{mermaid}
+%%| fig-width: 5
+%%| fig-align: center
     flowchart LR
         A[Hardware] --> B[Event Source]
         B --> C[Event Queue]
         C --> D[Event Handler]
         D --> E[Application]
+```
 
 ### Direct Communication
 
+```{mermaid}
+%%| fig-width: 5
+%%| fig-align: center
     flowchart LR
         A[Application] --> B[Platform API]
         B --> C[Hardware Controller]
         C --> D[Hardware]
+```
+

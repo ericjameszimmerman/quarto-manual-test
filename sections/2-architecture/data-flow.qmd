@@ -12,6 +12,7 @@ The platform implements a multi-layered data flow architecture ensuring efficien
 
 ### 1. Hardware Communication Flow
 
+```{mermaid}
     sequenceDiagram
         participant App as Application
         participant HAL as Hardware Layer
@@ -22,28 +23,30 @@ The platform implements a multi-layered data flow architecture ensuring efficien
         HAL->>HW: Hardware Signal
         HW-->>HAL: Hardware Response
         HAL-->>App: Operation Result
+```
 
 ### 2. Event Processing Flow
 
+```{mermaid}
     flowchart LR
         A[Hardware Event] --> B[Event Queue]
         B --> C[Event Processor]
         C --> D[Event Handlers]
         D --> E[Application Callback]
-
+```
 ## Data Transformation Layers
 
 ### 1. Raw Hardware Layer
-
+```c
     struct RawGPIOData {
         uint32_t pin_state;      // Current pin states
         uint32_t edge_detect;    // Edge detection flags
         uint32_t rising_edge;    // Rising edge events
         uint32_t falling_edge;   // Falling edge events
     };
-
+```
 ### 2. Hardware Abstraction Layer
-
+```c
     class GPIOState {
     public:
         bool getPinState(int pin) const;
@@ -53,9 +56,9 @@ The platform implements a multi-layered data flow architecture ensuring efficien
     private:
         RawGPIOData raw_data;
     };
-
+```
 ### 3. Application Layer
-
+```c
     class GPIOEvent {
     public:
         int pin;
@@ -63,11 +66,13 @@ The platform implements a multi-layered data flow architecture ensuring efficien
         std::chrono::system_clock::time_point timestamp;
         bool state;
     };
+```
 
 ## Data Flow Examples
 
 ### GPIO Interrupt Handling
 
+```c
     void handleGPIOInterrupt() {
         // Read raw hardware state
         RawGPIOData raw_data = readGPIORegisters();
@@ -88,6 +93,7 @@ The platform implements a multi-layered data flow architecture ensuring efficien
             }
         }
     }
+```
 
 ## Data Flow Optimization
 
