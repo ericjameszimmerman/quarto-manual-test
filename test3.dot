@@ -1,0 +1,163 @@
+digraph AgileBoard {
+  // General graph setup
+  graph [bgcolor = "white"; fontname = "Arial"; fontsize = 12; rankdir = "LR";];
+  node [shape = "none"; margin = 0;];
+  edge [color = "gray40"; fontname = "Arial"; fontsize = 10;];
+  
+  // -------------------------
+  // 1) Minimal Style: Border = status color (#0d6efd for “New”)
+  // -------------------------
+  CARD1 [label = <
+    <TABLE BORDER="2" COLOR="#0d6efd" BGCOLOR="#ffffff"
+    CELLSPACING="0" CELLPADDING="8" STYLE="rounded">
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="14"><B>Collect Requirements</B></FONT><BR/>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">CARD-101</FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">
+    Work with stakeholders to gather requirements
+    </FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="10" COLOR="#0d6efd"><B>Status: New</B></FONT>
+    </TD>
+    </TR>
+    </TABLE>
+    >;];
+  
+  // -------------------------
+  // 2) Title Row with Background Color: Border = status color (#ffc107 for “In Progress”)
+  // -------------------------
+  CARD2 [label = <
+    <TABLE BORDER="2" COLOR="#ffc107" CELLSPACING="0" CELLPADDING="0" STYLE="rounded">
+    <!-- Title row with a background -->
+    <TR BGCOLOR="#ffc107">
+    <TD ALIGN="CENTER" CELLPADDING="8">
+    <FONT COLOR="#000" POINT-SIZE="14"><B>Create Mockups</B></FONT><BR/>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">CARD-102</FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD CELLPADDING="8">
+    <FONT POINT-SIZE="10" COLOR="#6c757d">
+    Design initial UI mockups for the main pages
+    </FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD CELLPADDING="8">
+    <FONT POINT-SIZE="10" COLOR="#ffc107"><B>Status: In Progress</B></FONT>
+    </TD>
+    </TR>
+    </TABLE>
+    >;];
+  
+  // -------------------------
+  // 3) With an Icon & Extra Row: Border = status color (#6610f2 for “Review”)
+  // -------------------------
+  CARD3 [label = <
+    <TABLE BORDER="2" COLOR="#6610f2" CELLSPACING="0" CELLPADDING="8" STYLE="rounded">
+    <TR>
+    <TD COLSPAN="2" BGCOLOR="#f8f9fa">
+    <FONT POINT-SIZE="14" COLOR="#6610f2"><B>Code Review</B></FONT><BR/>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">CARD-103</FONT>
+    </TD>
+    </TR>
+    <TR>
+    <!-- Icon column -->
+    <TD VALIGN="TOP" WIDTH="20" ALIGN="CENTER">
+    <FONT COLOR="#6610f2" POINT-SIZE="20">&#128065;</FONT>
+    </TD>
+    <!-- Description column -->
+    <TD>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">
+    Conduct thorough review of pull requests and provide feedback
+    </FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD COLSPAN="2">
+    <FONT POINT-SIZE="10" COLOR="#6c757d">Assigned to: @jane</FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD COLSPAN="2">
+    <FONT POINT-SIZE="10" COLOR="#6610f2"><B>Status: Review</B></FONT>
+    </TD>
+    </TR>
+    </TABLE>
+    >;];
+  
+  // -------------------------
+  // 4) Left Color Bar + Bordered Box: Border = status color (#198754 for “Completed”)
+  // -------------------------
+  CARD4 [label = <
+    <TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0">
+    <TR>
+    <!-- Left color bar -->
+    <TD BGCOLOR="#198754" VALIGN="TOP" WIDTH="5"></TD>
+    <TD>
+    <!-- Inner table with border -->
+    <TABLE BORDER="2" COLOR="#198754" CELLSPACING="0" CELLPADDING="8" STYLE="rounded">
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="14" COLOR="#198754"><B>Deploy to Staging</B></FONT><BR/>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">CARD-104</FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">
+    Deploy the application to the staging environment
+    for final testing
+    </FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="10" COLOR="#198754"><B>Status: Completed</B></FONT>
+    </TD>
+    </TR>
+    </TABLE>
+    </TD>
+    </TR>
+    </TABLE>
+    >;];
+  
+  // -------------------------
+  // 5) Top Color Bar + Matching Border: Border = status color (#dc3545 for “Blocked”)
+  // -------------------------
+  CARD5 [label = <
+    <TABLE BORDER="2" COLOR="#dc3545" CELLSPACING="0" CELLPADDING="0" STYLE="rounded">
+    <TR>
+    <TD BGCOLOR="#dc3545" COLSPAN="2" CELLPADDING="8" ALIGN="CENTER">
+    <FONT COLOR="#ffffff" POINT-SIZE="14"><B>Integration Testing</B></FONT><BR/>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">CARD-105</FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD COLSPAN="2" CELLPADDING="8">
+    <FONT POINT-SIZE="10" COLOR="#6c757d">
+    Perform end-to-end integration tests with external systems
+    </FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD COLSPAN="2" CELLPADDING="8" ALIGN="LEFT">
+    <FONT POINT-SIZE="10" COLOR="#dc3545"><B>Status: Blocked</B></FONT>
+    </TD>
+    </TR>
+    </TABLE>
+    >;];
+  
+  // (Optional) Sample edges to connect these cards
+  // CARD1 -> CARD2 [label="leads to", fontsize=9];
+  // CARD2 -> CARD3 [label="blocks", fontsize=9];
+  // CARD4 -> CARD5 [label="before testing", fontsize=9];
+}

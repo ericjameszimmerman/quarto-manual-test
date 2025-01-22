@@ -1,0 +1,47 @@
+digraph DecompositionView {
+  rankdir = TB;
+  node [shape = none; fontsize = 10;];
+  
+  vehicle [label = <
+    <table border="1" cellspacing="0" cellpadding="4" cellborder="0">
+    <tr><td colspan="1" border="0"><b>«part»<br/>vehicle</b></td></tr>
+    <tr><td colspan="1" bgcolor="lightgrey">attributes</td></tr>
+    <tr><td>mass</td></tr>
+    <tr><td colspan="1" bgcolor="lightgrey">actions</td></tr>
+    <tr><td>perform providePower</td></tr>
+    </table>
+    >;];
+  
+  transmission [label = <
+    <table border="1" cellspacing="0" cellpadding="4" cellborder="0">
+    <tr><td colspan="1" border="0"><b>«part»<br/>transmission</b></td></tr>
+    <tr><td colspan="1" bgcolor="lightgrey">attributes</td></tr>
+    <tr><td>mass</td></tr>
+    <tr><td colspan="1" bgcolor="lightgrey">actions</td></tr>
+    <tr><td>perform amplifyTorque</td></tr>
+    </table>
+    >;];
+  
+  engine [label = <
+    <table border="1" cellspacing="0" cellpadding="4" cellborder="0">
+    <tr><td colspan="1" border="0"><b>«part»<br/>engine</b></td></tr>
+    <tr><td colspan="1" bgcolor="lightgrey">attributes</td></tr>
+    <tr><td>mass</td></tr>
+    <tr><td colspan="1" bgcolor="lightgrey">actions</td></tr>
+    <tr><td>perform generateTorque</td></tr>
+    </table>
+    >;];
+  
+  cylinders [label = <
+    <table border="1" cellspacing="0" cellpadding="4" cellborder="0">
+    <tr><td colspan="1" border="0"><b>«part»<br/>cylinders[6]</b></td></tr>
+    </table>
+    >;];
+  
+  vehicle -> transmission;
+  vehicle -> engine;
+  engine -> cylinders;
+  
+  label = "Decomposition View of vehicle";
+  labelloc = "t";
+}

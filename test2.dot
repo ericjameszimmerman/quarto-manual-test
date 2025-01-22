@@ -1,0 +1,116 @@
+digraph AgileBoard {
+  // Global styling
+  graph [bgcolor = "white"; fontname = "Arial"; fontsize = 12; rankdir = "LR";];
+  node [shape = "none"; margin = 0;];
+  edge [color = "gray40"; fontname = "Arial"; fontsize = 10;];
+  
+  // Card 1
+  CARD1 [label = <
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" 
+    STYLE="rounded" COLOR="#dee2e6" BGCOLOR="#ffffff">
+    <!-- Title Row -->
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="14"><B>User Login</B></FONT><BR/>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">CARD-101</FONT>
+    </TD>
+    </TR>
+    <!-- Description Row -->
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">
+    Implement user login functionality
+    </FONT>
+    </TD>
+    </TR>
+    <!-- Status Row -->
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="10" COLOR="#198754"><B>Status: In Progress</B></FONT>
+    </TD>
+    </TR>
+    </TABLE>
+    >;];
+  
+  // Card 2
+  CARD2 [label = <
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" 
+    STYLE="rounded" COLOR="#dee2e6" BGCOLOR="#ffffff">
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="14"><B>Database Setup</B></FONT><BR/>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">CARD-102</FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">
+    Set up and configure main database
+    </FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="10" COLOR="#0d6efd"><B>Status: Completed</B></FONT>
+    </TD>
+    </TR>
+    </TABLE>
+    >;];
+  
+  // Card 3
+  CARD3 [label = <
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" 
+    STYLE="rounded" COLOR="#dee2e6" BGCOLOR="#ffffff">
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="14"><B>UI Design</B></FONT><BR/>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">CARD-103</FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">
+    Create initial UI mockups
+    </FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="10" COLOR="#ffc107"><B>Status: Pending</B></FONT>
+    </TD>
+    </TR>
+    </TABLE>
+    >;];
+  
+  // Card 4
+  CARD4 [label = <
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" 
+    STYLE="rounded" COLOR="#dee2e6" BGCOLOR="#ffffff">
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="14"><B>API Integration</B></FONT><BR/>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">CARD-104</FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="10" COLOR="#6c757d">
+    Integrate with external API
+    </FONT>
+    </TD>
+    </TR>
+    <TR>
+    <TD>
+    <FONT POINT-SIZE="10" COLOR="#dc3545"><B>Status: Blocked</B></FONT>
+    </TD>
+    </TR>
+    </TABLE>
+    >;];
+  
+  // Define dependencies (edges)
+  // Adjust the labels or arrow directions as needed:
+  CARD1 -> CARD2 [label = "depends on"; fontsize = 9;];
+  CARD4 -> CARD1 [label = "blocked by"; fontsize = 9;];
+  CARD3 -> CARD1 [label = "depends on"; fontsize = 9;];
+  CARD4 -> CARD2 [label = "requires"; fontsize = 9;];
+}

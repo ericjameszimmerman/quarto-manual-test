@@ -1,0 +1,18 @@
+digraph AgileBoard {
+  // Global styling
+  graph [bgcolor = "white"; fontsize = 12; fontname = "Arial";];
+  node [shape = "record"; style = "rounded,filled"; fontname = "Arial"; fontsize = 10; fillcolor = "lightyellow"; color = "gray40";];
+  edge [color = "gray40"; fontname = "Arial"; fontsize = 8;];
+  
+  // Define cards (nodes)
+  CARD1 [label = "{ID: CARD-101|Name: User Login|Description: Implement user login functionality|Status: In Progress}";];
+  CARD2 [label = "{ID: CARD-102|Name: Database Setup|Description: Set up and configure main DB|Status: Completed}";];
+  CARD3 [label = "{ID: CARD-103|Name: UI Design|Description: Create initial UI mockups|Status: Pending}";];
+  CARD4 [label = "{ID: CARD-104|Name: API Integration|Description: Integrate with external API|Status: Blocked}";];
+  
+  // Define dependencies (edges)
+  CARD1 -> CARD2 [label = "depends on";];
+  CARD4 -> CARD1 [label = "blocked by";];
+  CARD3 -> CARD1 [label = "depends on";];
+  CARD4 -> CARD2 [label = "requires";];
+}
